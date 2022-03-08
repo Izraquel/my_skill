@@ -1,12 +1,14 @@
-import React, { useDebugValue, useState } from 'react'
-
+import React, { useState } from 'react'
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  FlatList
 } from 'react-native'
+import { Button } from '../components/Button'
+import { SKillCard } from '../components/SkillCard'
 
 interface ISkillData {
   id: string;
@@ -14,105 +16,73 @@ interface ISkillData {
 }
 
 export function Home() {
-  const [newSkill, setNewSKill] = useState('')
+  const [newSkill, setNewSkill] = useState('')
   const [mySkills, setMySkills] = useState<ISkillData[]>([])
 
   function handleAddNewSkill() {
     const data = {
-      id: String(new Date().getTime), //converte para data atual
+      id: String(new Date().getTime()), //converte para data atual
       name: newSkill
     }
-    setMySkills([...mySkills, data]) //imutabilidade - copia e adiciona
-
+    // spread operator
+    setMySkills([...mySkills, data])  //imutabilidade - copia e adiciona
+    setNewSkill('')
   }
-
-
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.title}>
-          Welcome, Raquel Lindona
-
-        </Text>
+        <Text style={styles.title}>Welcome, Raquel Lindona</Text>
 
         <TextInput
           style={styles.input}
           placeholder='New Skill'
           placeholderTextColor='#eee'
-          onChangeText={value => setNewSKill}
+          value={newSkill}
+          onChangeText={value => setNewSkill(value)}
         />
 
-        <TouchableOpacity
-          style={styles.button}
-          activeOpacity={0.7}
-          onPress={handleAddNewSkill} //quando pressionar o botão add
-        >
-          <Text style={styles.buttonText} >
-            Add
-          </Text>
-        </TouchableOpacity>
+        <Button 
+          handleAddNewSkill={handleAddNewSkill}
+          title='Incluir'
+        />
 
         <Text style={[styles.title, { marginVertical: 20 }]}>
-          My Skills
+          MySkills
         </Text>
-
-        {
-          mySkills.map((skill, indice) => (
-            <TouchableOpacity style={styles.listButton}
-            key={skill.id}>
-              <Text style={styles.title}>
-                {skill.name}
-              </Text>
-            </TouchableOpacity>
-          ))
-        }
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={mySkills} //todas as info que queremos listar
+          keyExtractor={item => item.id}  //qual item não vai se repetir 
+          renderItem={({ item }) => (
+            <SKillCard />
+            )}
+        />
       </View>
-
-
     </>
   )
-
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#121015',
     paddingHorizontal: 30,
     paddingVertical: 70
-
   },
   title: {
-    textAlign: 'center',
+    textAlign: "center",
     color: '#FFF',
     fontSize: 24,
-    fontWeight: "bold"
+    fontWeight: 'bold',
   },
   input: {
-    textAlign: 'center',
     backgroundColor: '#1f1e25',
-    color: '#FFF',
+    color: '#fff',
     fontSize: 18,
     padding: 15,
     marginTop: 30,
     borderRadius: 7
   },
-  button: {
-    backgroundColor: '#a370f7',
-    padding: 15,
-    borderRadius: 7,
-    textAlign: 'center',
-    marginTop: 10,
-  },
-  buttonText: {
-    textAlign: 'center',
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold'
-  },
-  listButton: {
-    backgroundColor: '#eee'
-    
-  }
-
-
+ 
+  
 })
