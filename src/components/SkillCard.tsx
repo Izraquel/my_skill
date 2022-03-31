@@ -4,11 +4,20 @@ import {
   StyleSheet,
 } from 'react-native'
 
-export function SKillCard() {
+interface SkillCardProps {
+  skillName: string;
+  handleDeleteSkill: () => void;
+}
+
+export function SKillCard({ skillName, handleDeleteSkill }: SkillCardProps) {
   return (
-    <TouchableOpacity style={styles.buttonSkill}>
-      <Text style={styles.textSkill}>
-        skill
+    <TouchableOpacity
+      style={styles.buttonSkill}
+      onPress={handleDeleteSkill}
+    >
+      <Text
+        style={styles.textSkill}>
+        {skillName}
       </Text>
     </TouchableOpacity>
   )

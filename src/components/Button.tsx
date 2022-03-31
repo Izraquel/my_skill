@@ -5,11 +5,11 @@ import {
 } from 'react-native'
 
 interface ButtonProps {
-  handleAddNewSkill: () => void
+  handleAddNewSkill?: () => void
   title: string
 }
 
-export function Button({handleAddNewSkill, title}: ButtonProps) {
+export function Button({ handleAddNewSkill, title }: ButtonProps) {
   return (
     <TouchableOpacity
       style={styles.button}
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   buttonText: {
+    // marginBottom:7,
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold'
